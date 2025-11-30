@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dl5w7xb48f5o0"]
+
+[ext_resource type="Script" uid="uid://d2fysuy273s5x" path="res://scripts/deck.gd" id="1_sdhao"]
+[ext_resource type="Texture2D" uid="uid://bq7m75kj4pbwa" path="res://assets/Tilesheet/cardsLarge_tilemap.png" id="2_6rnap"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdbsr"]
+atlas = ExtResource("2_6rnap")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6rnap"]
+size = Vector2(42, 60)
+
+[node name="Deck" type="Node2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_sdhao")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_gdbsr")
+centered = false
+region_enabled = true
+region_rect = Rect2(856, 67, 42, 60)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(21, 30)
+shape = SubResource("RectangleShape2D_6rnap")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
