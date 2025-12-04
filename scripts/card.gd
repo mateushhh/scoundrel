@@ -74,6 +74,7 @@ func _init() -> void:
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if (event.is_action_pressed("click")):
+		print("card clicked card.gd")
 		#action()
 		card_clicked.emit(self)
 		viewport.set_input_as_handled()

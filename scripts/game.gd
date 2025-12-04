@@ -16,8 +16,9 @@ var weapon: int = 0
 var last_weapon_use: int = 0
 
 func _ready() -> void:
-	var children = $".".get_children()
-	for child in children:
+	#Remove placeholders from the scene
+	var placeholder_children = [$Deck, $Card, $Card2, $Card3, $Card4]
+	for child in placeholder_children:
 		remove_child(child)
 	
 	deck = deck_scene.instantiate()
@@ -36,6 +37,11 @@ func _ready() -> void:
 	update_visuals()
 
 func update_visuals():
+	var health_bar = $Control/HealthBar
+	var health_value = $Control/HealthBar/HealthValue
+	health_bar.value = health
+	health_value.text = str(health)
+	
 	var i = 0
 	for card in cards:
 		card.position = Vector2(card_pos_x + i * card_gap_x, card_pos_y)
@@ -44,7 +50,6 @@ func update_visuals():
 func _on_card_clicked(card: Card):
 	print("clicked card: ", card.colour, " ", card.suit, " ", card.rank)
 	var card_rank = card.rank
-	# Ace
 	if(card.rank == 1):
 		card_rank = 14
 	if(card.colour == Card.Colour.BLACK):
@@ -53,6 +58,7 @@ func _on_card_clicked(card: Card):
 			health -= max(0, card_rank - weapon)
 		else:
 			health -= card_rank
+		health = max(0, health)
 	elif(card.suit == Card.Suit.HEARTS):
 		print("heal ", card_rank, " hp")
 		health = max(20, health + card_rank) 
@@ -61,6 +67,7 @@ func _on_card_clicked(card: Card):
 		weapon = card_rank
 		last_weapon_use = 0
 	$".".remove_child(card)
+	update_visuals()
 	return
 
 func _on_deck_clicked():
