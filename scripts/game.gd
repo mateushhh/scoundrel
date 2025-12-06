@@ -10,7 +10,7 @@ const deck_pos_x = 100
 const deck_pos_y = 100
 
 var deck: Deck
-var cards: Array[Card] = []
+var cards: Array[Card] = [null, null, null, null]
 var health: int = 20
 var weapon: int = 0
 var last_weapon_use: int = 0
@@ -28,12 +28,11 @@ func _ready() -> void:
 	deck.deck_clicked.connect(_on_deck_clicked)
 	
 	#Starting 4 cards
-	for i in range(4):
+	for i in range(cards.size()):
 		var card = deck.pop_front()
 		$".".add_child(card)
-		cards.append(card)
+		cards[i] = card
 		card.card_clicked.connect(_on_card_clicked)
-	
 	update_visuals()
 
 func update_visuals():
@@ -42,37 +41,60 @@ func update_visuals():
 	health_bar.value = health
 	health_value.text = str(health)
 	
-	var i = 0
-	for card in cards:
-		card.position = Vector2(card_pos_x + i * card_gap_x, card_pos_y)
-		i+=1
+	for i in range(cards.size()):
+		if cards[i]:
+			cards[i].position = Vector2(card_pos_x + i * card_gap_x, card_pos_y)
+
+func table_card_count() -> int:
+	var count = 0
+	for i in range(cards.size()):
+		if cards[i]:
+			count += 1
+	return count
+
+func deck_card_count() -> int:
+	var count = 0
+	for i in range(deck.cards.size()):
+		if deck.cards[i]:
+			count += 1
+	return count
 
 func _on_card_clicked(card: Card):
-	print("clicked card: ", card.colour, " ", card.suit, " ", card.rank)
-	var card_rank = card.rank
-	if(card.rank == 1):
-		card_rank = 14
-	if(card.colour == Card.Colour.BLACK):
-		print("take ", card_rank, " dmg")
-		if ((last_weapon_use == 0) or (card_rank < last_weapon_use)):
-			health -= max(0, card_rank - weapon)
-		else:
-			health -= card_rank
-		health = max(0, health)
-	elif(card.suit == Card.Suit.HEARTS):
-		print("heal ", card_rank, " hp")
-		health = max(20, health + card_rank) 
-	elif(card.suit == Card.Suit.DIAMONDS):
-		print("add ", card_rank, " hitpower")
-		weapon = card_rank
-		last_weapon_use = 0
-	$".".remove_child(card)
+	#print("clicked card: ", card.colour, " ", card.suit, " ", card.rank)
+	
+	if(table_card_count() > 1):
+		var card_rank = card.rank
+		if(card.rank == 1):
+			card_rank = 14
+		if(card.colour == Card.Colour.BLACK):
+			print("You've got hit (-", card_rank, "hp)")
+			if ((last_weapon_use == 0) or (card_rank < last_weapon_use)):
+				health -= max(0, card_rank - weapon)
+			else:
+				health -= card_rank
+			health = max(0, health)
+		elif(card.suit == Card.Suit.HEARTS):
+			print("You've healed (+", card_rank, "hp)")
+			health = min(20, health + card_rank) 
+		elif(card.suit == Card.Suit.DIAMONDS):
+			print("You've found a weapon (+", card_rank, "hitpower)")
+			weapon = card_rank
+			last_weapon_use = 0
+		cards[cards.find(card)] = null
+		$".".remove_child(card)
+	else:
+		print("Only one card on the table, take cards from the deck")
 	update_visuals()
 	return
 
-func _on_deck_clicked():
-	print("deck clicked")
-	pass
-
-func _process(delta: float) -> void:
+func _on_deck_clicked():	
+	# taking 3 cards from the deck
+	if ((table_card_count() == 1) and (deck_card_count() >=3)) :
+		for i in range(cards.size()):
+			if cards[i] == null:
+				var card = deck.pop_front()
+				$".".add_child(card)
+				cards[i] = card
+				card.card_clicked.connect(_on_card_clicked)
+	update_visuals()
 	pass
