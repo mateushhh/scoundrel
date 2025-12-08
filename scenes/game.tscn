@@ -20,6 +20,7 @@ script = ExtResource("1_yqjtg")
 z_index = 1
 layout_direction = 2
 layout_mode = 3
+anchors_preset = 0
 offset_right = 800.0
 offset_bottom = 600.0
 mouse_filter = 1
@@ -102,18 +103,30 @@ offset_bottom = 600.0
 mouse_filter = 2
 color = Color(0.20784314, 0.39607844, 0.3019608, 1)
 
-[node name="Label" type="Label" parent="Control"]
+[node name="HelpLabel" type="Label" parent="Control"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_iywne")
-text = "Suit Meanings
-HEARTS - Healing
-DIAMONDS - Weapon
-SPADES - Enemy
-CLUBS - Enemy"
-metadata/_edit_lock_ = true
+text = "Click the deck for next room
+Run to skip the room
+♡ - Healing
+♢ - Weapon
+♠ - Enemy
+♣ - Enemy
+You can't run twice in a row"
+
+[node name="RoomLabel" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 54.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "Room: 5"
 
 [node name="Deck" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(100, 300)

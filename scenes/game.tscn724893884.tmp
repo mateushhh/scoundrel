@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4ati6vh86t8t"]
+
+[ext_resource type="PackedScene" uid="uid://cvvv2p2a3qslt" path="res://scenes/card.tscn" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://d2e2ay1hgsp06" path="res://scripts/game.gd" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://dl5w7xb48f5o0" path="res://scenes/deck.tscn" id="2_yqjtg"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_yqjtg")
+
+[node name="Control" type="Control" parent="."]
+layout_direction = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 800.0
+offset_bottom = 600.0
+mouse_filter = 1
+
+[node name="HealthBar" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 47.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+max_value = 20.0
+step = 1.0
+value = 15.0
+show_percentage = false
+
+[node name="HealthValue" type="Label" parent="Control/HealthBar"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 27.0
+text = "15"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Deck" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(100, 100)
+
+[node name="Card" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(200, 250)
+
+[node name="Card2" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(300, 250)
+rank = 2
+
+[node name="Card3" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(400, 250)
+rank = 3
+
+[node name="Card4" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(500, 250)
+rank = 4

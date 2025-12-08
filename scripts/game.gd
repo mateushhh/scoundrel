@@ -24,6 +24,8 @@ var last_weapon_use_rank: int = 0
 var last_weapon_use_suit: Card.Suit = Card.Suit.CLUBS
 
 var game_over: bool = 0
+var current_room: int = 1
+var last_skipped_room: int = -1
 
 func _ready() -> void:
 	#Remove placeholders from the scene
@@ -64,8 +66,11 @@ func check_game_over():
 func update_visuals():
 	var health_bar = $Control/HealthBar
 	var health_value = $Control/HealthBar/HealthValue
+	var room_label = $Control/RoomLabel
+	
 	health_bar.value = health
 	health_value.text = str(health)
+	room_label.text = "Room: " + str(current_room)
 	
 	if weapon != 0:
 	# Ace has power of 14 but in deck.gd Ace has rank 1
@@ -148,17 +153,19 @@ func _on_deck_clicked():
 				$".".add_child(card)
 				cards[i] = card
 				card.card_clicked.connect(_on_card_clicked)
-	update()
+		current_room += 1
+		update()
 	pass
 
 func _on_run_button_pressed() -> void:
-	if table_card_count() == 4:
+	if (last_skipped_room != current_room - 1) and (table_card_count() == 4):
+		last_skipped_room = current_room
 		for i in range(4):
 			deck.push_back(cards[i])
 			$".".remove_child(cards[i])
 			cards[i] = deck.pop_front()
 			$".".add_child(cards[i])
 			cards[i].card_clicked.connect(_on_card_clicked)
-		print(cards)
+		current_room += 1
 		update()
 	pass
