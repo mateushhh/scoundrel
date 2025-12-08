@@ -6,6 +6,8 @@ signal deck_clicked
 var card_scene = preload("res://scenes/card.tscn")
 var cards: Array[Card] = []
 
+var mouse_hover = false
+
 func _ready() -> void:
 	print("Creating Deck")
 	for suit in Card.Suit.values():
@@ -17,6 +19,12 @@ func _ready() -> void:
 			#print(suit, " ", rank)
 	print("Deck Created size: ", cards.size())
 	return
+
+func _process(delta_time) -> void:
+	if mouse_hover and scale[0] < 2.5:
+		scale = scale + Vector2(0.1, 0.1)
+	elif !mouse_hover and scale[0] > 2.0:
+		scale = scale - Vector2(0.1, 0.1)
 
 func shuffle() -> void:
 	cards.shuffle()
@@ -55,6 +63,12 @@ func pop_back() -> Card:
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if (event.is_action_pressed("click")):
-		#action()
 		deck_clicked.emit()
 		viewport.set_input_as_handled()
+
+func _on_area_2d_mouse_entered() -> void:
+	mouse_hover = true
+	
+
+func _on_area_2d_mouse_exited() -> void:
+	mouse_hover = false

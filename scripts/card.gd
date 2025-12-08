@@ -16,6 +16,8 @@ const y_grid_offset = 65
 enum Suit {HEARTS, DIAMONDS, CLUBS, SPADES}
 enum Colour {RED, BLACK}
 
+var mouse_hover = false
+
 @onready var sprite: Sprite2D = $Sprite2D
 
 var colour: Colour = Colour.RED
@@ -62,12 +64,14 @@ func setup(new_suit: Suit, new_rank: int):
 	suit = new_suit
 	rank = new_rank
 
-#func action():
-#	print("Action: ", Suit.find_key(suit), " ", rank)
-#	return [suit, rank]
-
 func _ready() -> void:
 	update_visuals()
+
+func _process(delta_time) -> void:
+	if mouse_hover and scale[0] < 2.5:
+		scale = scale + Vector2(0.1, 0.1)
+	elif !mouse_hover and scale[0] > 2.0:
+		scale = scale - Vector2(0.1, 0.1)
 
 func _init() -> void:
 	update_visuals()
@@ -76,3 +80,9 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 	if (event.is_action_pressed("click")):
 		card_clicked.emit(self)
 		viewport.set_input_as_handled()
+	
+func _on_area_2d_mouse_entered() -> void:
+	mouse_hover = true
+
+func _on_area_2d_mouse_exited() -> void:
+	mouse_hover = false

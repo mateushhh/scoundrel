@@ -1,17 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4ati6vh86t8t"]
+[gd_scene load_steps=4 format=3 uid="uid://b4ati6vh86t8t"]
 
 [ext_resource type="PackedScene" uid="uid://cvvv2p2a3qslt" path="res://scenes/card.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://d2e2ay1hgsp06" path="res://scripts/game.gd" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://dl5w7xb48f5o0" path="res://scenes/deck.tscn" id="2_yqjtg"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnu2h"]
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbhrr"]
-bg_color = Color(0.9607843, 0.17254902, 0.30588236, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
-bg_color = Color(0.003921569, 0.003921569, 0.003921569, 0.1254902)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_yqjtg")
@@ -20,6 +11,7 @@ script = ExtResource("1_yqjtg")
 z_index = 1
 layout_direction = 2
 layout_mode = 3
+anchors_preset = 0
 offset_right = 800.0
 offset_bottom = 600.0
 mouse_filter = 1
@@ -35,8 +27,6 @@ offset_right = 100.0
 offset_bottom = 47.0
 grow_horizontal = 2
 size_flags_horizontal = 4
-theme_override_styles/background = SubResource("StyleBoxFlat_lnu2h")
-theme_override_styles/fill = SubResource("StyleBoxFlat_lbhrr")
 max_value = 20.0
 step = 1.0
 value = 15.0
@@ -46,8 +36,6 @@ show_percentage = false
 layout_mode = 0
 offset_right = 200.0
 offset_bottom = 27.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 16
 text = "15"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -67,53 +55,11 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.40784314)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 3
-theme_override_constants/outline_size = -3
-theme_override_constants/shadow_outline_size = 10
 theme_override_font_sizes/font_size = 64
 text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="RunButton" type="Button" parent="Control"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -30.0
-offset_right = -50.0
-offset_bottom = 30.0
-grow_horizontal = 0
-grow_vertical = 2
-theme_override_font_sizes/font_size = 32
-text = "RUN"
-
-[node name="ColorRect" type="ColorRect" parent="Control"]
-z_index = -1
-layout_mode = 0
-offset_right = 800.0
-offset_bottom = 600.0
-mouse_filter = 2
-color = Color(0.20784314, 0.39607844, 0.3019608, 1)
-
-[node name="Label" type="Label" parent="Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_iywne")
-text = "Suit Meanings
-HEARTS - Healing
-DIAMONDS - Weapon
-SPADES - Enemy
-CLUBS - Enemy"
-metadata/_edit_lock_ = true
 
 [node name="Deck" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(100, 300)
@@ -137,8 +83,7 @@ rank = 4
 position = Vector2(400, 470)
 suit = 1
 
-[node name="LastWeaponUse" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(440, 510)
+[node name="LastWeaponUse" parent="Weapon" instance=ExtResource("1_uwrxv")]
+position = Vector2(20, 20)
+scale = Vector2(1, 1)
 suit = 2
-
-[connection signal="pressed" from="Control/RunButton" to="." method="_on_run_button_pressed"]
