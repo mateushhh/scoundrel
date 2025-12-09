@@ -92,7 +92,7 @@ offset_right = -50.0
 offset_bottom = 30.0
 grow_horizontal = 0
 grow_vertical = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 16
 text = "RUN"
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
@@ -125,8 +125,18 @@ anchor_bottom = 1.0
 offset_top = -23.0
 offset_right = 54.0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 16
 text = "Room: 5"
+
+[node name="CardsDeckLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 360.0
+offset_right = 142.0
+offset_bottom = 399.0
+text = "44/52"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Deck" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(100, 300)

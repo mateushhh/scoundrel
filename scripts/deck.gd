@@ -21,7 +21,7 @@ func _ready() -> void:
 	return
 
 func _process(delta_time) -> void:
-	if mouse_hover and scale[0] < 2.5:
+	if mouse_hover and scale[0] < 2.2:
 		scale = scale + Vector2(0.1, 0.1)
 	elif !mouse_hover and scale[0] > 2.0:
 		scale = scale - Vector2(0.1, 0.1)
