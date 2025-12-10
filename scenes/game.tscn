@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4ati6vh86t8t"]
+[gd_scene load_steps=9 format=3 uid="uid://b4ati6vh86t8t"]
 
 [ext_resource type="PackedScene" uid="uid://cvvv2p2a3qslt" path="res://scenes/card.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://d2e2ay1hgsp06" path="res://scripts/game.gd" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://dl5w7xb48f5o0" path="res://scenes/deck.tscn" id="2_yqjtg"]
+[ext_resource type="Shader" uid="uid://bkevaahnfslsl" path="res://shaders/gameover.gdshader" id="4_lbhrr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnu2h"]
 bg_color = Color(1, 1, 1, 1)
@@ -12,6 +13,10 @@ bg_color = Color(0.9607843, 0.17254902, 0.30588236, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
 bg_color = Color(0.003921569, 0.003921569, 0.003921569, 0.1254902)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iywne"]
+shader = ExtResource("4_lbhrr")
+shader_parameter/lod = 0.0
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_yqjtg")
@@ -50,32 +55,6 @@ offset_bottom = 27.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 16
 text = "15"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="GameOverLabel" type="Label" parent="Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -46.0
-offset_top = -11.5
-offset_right = 46.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.40784314)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 3
-theme_override_constants/outline_size = -3
-theme_override_constants/shadow_outline_size = 10
-theme_override_font_sizes/font_size = 64
-text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -138,6 +117,78 @@ text = "44/52"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[node name="ColorRect" type="ColorRect" parent="Control/CanvasLayer"]
+material = SubResource("ShaderMaterial_iywne")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="GameOverLabel" type="Label" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.40784314)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = -3
+theme_override_constants/shadow_outline_size = 10
+theme_override_font_sizes/font_size = 64
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.5
+offset_top = 80.0
+offset_right = 37.5
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RESTART"
+
+[node name="ScoreLabel" type="Label" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = 50.0
+offset_right = 30.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+text = "SCORE: -123"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Deck" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(100, 300)
 
@@ -165,3 +216,4 @@ position = Vector2(440, 510)
 suit = 2
 
 [connection signal="pressed" from="Control/RunButton" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="Control/CanvasLayer/ColorRect/RestartButton" to="." method="_on_restart_button_pressed"]

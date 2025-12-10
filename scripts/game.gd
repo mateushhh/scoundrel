@@ -23,6 +23,7 @@ var weapon: int = 0
 var last_weapon_use_rank: int = 0
 var last_weapon_use_suit: Card.Suit = Card.Suit.CLUBS
 
+@onready var blur_rect = $Control/CanvasLayer/ColorRect
 var game_over: bool = 0
 var score: int = 0
 var current_room: int = 1
@@ -124,8 +125,18 @@ func update_visuals():
 		if cards[i]:
 			cards[i].position = Vector2(card_pos_x + i * card_gap_x, card_pos_y)
 	
+	set_blur(0.0)
 	if game_over:
-		$Control/GameOverLabel.visible = true
+		$Control/CanvasLayer/ColorRect/GameOverLabel.visible = true
+		$Control/CanvasLayer/ColorRect/RestartButton.visible = true
+		$Control/CanvasLayer/ColorRect/ScoreLabel.visible = true
+		$Control/CanvasLayer/ColorRect.mouse_filter = Control.MOUSE_FILTER_STOP
+		$Control/CanvasLayer/ColorRect/ScoreLabel.text = "SCORE: " + str(score)
+		var tween = create_tween()
+		tween.tween_method(set_blur, 0.0, 2.5, 1.0)
+
+func set_blur(value: float):
+	blur_rect.material.set_shader_parameter("lod", value)
 
 func update():
 	check_game_over()
@@ -201,4 +212,9 @@ func _on_run_button_pressed() -> void:
 			cards[i].card_clicked.connect(_on_card_clicked)
 		current_room += 1
 		update()
+	pass
+
+
+func _on_restart_button_pressed() -> void:
+	get_tree().reload_current_scene()
 	pass
