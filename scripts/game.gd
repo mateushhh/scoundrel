@@ -29,6 +29,9 @@ var score: int = 0
 var current_room: int = 1
 var last_skipped_room: int = -1
 
+const SAVE_PATH = "user://highscore.save"
+var high_score: int = -999
+
 func _ready() -> void:
 	#Remove placeholders from the scene
 	var placeholder_children = [$Deck, $Card, $Card2, $Card3, $Card4]
@@ -54,9 +57,14 @@ func _ready() -> void:
 	last_weapon_use_card = $LastWeaponUse
 	last_weapon_use_card.visible = false
 	
+	load_high_score()
+	
 	update()
 
 func check_game_over():
+	if game_over:
+		return
+	
 	score = 0
 	if deck_card_count() < 3:
 		print("game over, you got to the end of the deck")
@@ -74,6 +82,7 @@ func check_game_over():
 				if(card.rank == 1):
 					card_rank = 14
 				score += card_rank
+		handle_high_score_save()
 		print(score)
 		
 	if health <= 0:
@@ -91,7 +100,9 @@ func check_game_over():
 				if(card.rank == 1):
 					card_rank = 14
 				score -= card_rank
+		handle_high_score_save()
 		print(score)
+		
 	return
 
 func update_visuals():
@@ -130,8 +141,10 @@ func update_visuals():
 		$Control/CanvasLayer/ColorRect/GameOverLabel.visible = true
 		$Control/CanvasLayer/ColorRect/RestartButton.visible = true
 		$Control/CanvasLayer/ColorRect/ScoreLabel.visible = true
+		$Control/CanvasLayer/ColorRect/HighScoreLabel.visible = true
 		$Control/CanvasLayer/ColorRect.mouse_filter = Control.MOUSE_FILTER_STOP
 		$Control/CanvasLayer/ColorRect/ScoreLabel.text = "SCORE: " + str(score)
+		$Control/CanvasLayer/ColorRect/HighScoreLabel.text = "HIGHSCORE: " + str(high_score)
 		var tween = create_tween()
 		tween.tween_method(set_blur, 0.0, 2.5, 1.0)
 
@@ -214,7 +227,28 @@ func _on_run_button_pressed() -> void:
 		update()
 	pass
 
-
 func _on_restart_button_pressed() -> void:
 	get_tree().reload_current_scene()
 	pass
+
+func handle_high_score_save():
+	if score > high_score:
+		high_score = score
+		save_high_score()
+		print("New High Score Saved: ", high_score)
+
+func save_high_score():
+	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file:
+		file.store_var(high_score)
+		file.close()
+
+func load_high_score():
+	if FileAccess.file_exists(SAVE_PATH):
+		var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+		if file:
+			high_score = file.get_var()
+			file.close()
+			print("High Score Loaded: ", high_score)
+	else:
+		print("No save file found.")

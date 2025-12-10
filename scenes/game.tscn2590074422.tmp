@@ -1,0 +1,243 @@
+[gd_scene load_steps=9 format=3 uid="uid://b4ati6vh86t8t"]
+
+[ext_resource type="PackedScene" uid="uid://cvvv2p2a3qslt" path="res://scenes/card.tscn" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://d2e2ay1hgsp06" path="res://scripts/game.gd" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://dl5w7xb48f5o0" path="res://scenes/deck.tscn" id="2_yqjtg"]
+[ext_resource type="Shader" uid="uid://bkevaahnfslsl" path="res://shaders/gameover.gdshader" id="4_lbhrr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnu2h"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbhrr"]
+bg_color = Color(0.9607843, 0.17254902, 0.30588236, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+bg_color = Color(0.003921569, 0.003921569, 0.003921569, 0.1254902)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iywne"]
+shader = ExtResource("4_lbhrr")
+shader_parameter/lod = 0.0
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_yqjtg")
+
+[node name="Control" type="Control" parent="."]
+z_index = 1
+layout_direction = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 800.0
+offset_bottom = 600.0
+mouse_filter = 1
+
+[node name="HealthBar" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 47.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_lnu2h")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lbhrr")
+max_value = 20.0
+step = 1.0
+value = 15.0
+show_percentage = false
+
+[node name="HealthValue" type="Label" parent="Control/HealthBar"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "15"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RunButton" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -30.0
+offset_right = -50.0
+offset_bottom = 30.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "RUN"
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+z_index = -1
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 600.0
+mouse_filter = 2
+color = Color(0.20784314, 0.39607844, 0.3019608, 1)
+
+[node name="HelpLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_iywne")
+text = "Click the deck for next room
+Run to skip the room
+♡ - Healing
+♢ - Weapon
+♠ - Enemy
+♣ - Enemy
+You can't run twice in a row"
+
+[node name="RoomLabel" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 54.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "Room: 5"
+
+[node name="CardsDeckLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 360.0
+offset_right = 142.0
+offset_bottom = 399.0
+text = "44/52"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[node name="ColorRect" type="ColorRect" parent="Control/CanvasLayer"]
+material = SubResource("ShaderMaterial_iywne")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="GameOverLabel" type="Label" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.40784314)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = -3
+theme_override_constants/shadow_outline_size = 10
+theme_override_font_sizes/font_size = 64
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.5
+offset_top = 150.0
+offset_right = 37.5
+offset_bottom = 181.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RESTART"
+
+[node name="ScoreLabel" type="Label" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = 80.0
+offset_right = 46.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+text = "SCORE: -123"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="Control/CanvasLayer/ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = 60.0
+offset_right = 59.5
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+text = "HIGHSCORE: 30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Deck" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(100, 300)
+
+[node name="Card" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(250, 300)
+
+[node name="Card2" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(350, 300)
+rank = 2
+
+[node name="Card3" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(450, 300)
+rank = 3
+
+[node name="Card4" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(550, 300)
+rank = 4
+
+[node name="Weapon" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(400, 470)
+suit = 1
+
+[node name="LastWeaponUse" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(440, 510)
+suit = 2
+
+[connection signal="pressed" from="Control/RunButton" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="Control/CanvasLayer/ColorRect/RestartButton" to="." method="_on_restart_button_pressed"]
