@@ -21,3 +21,19 @@ The project is structured to separate generic card logic from specific game rule
 
 * **`card.gd`** and **`deck.gd`**: Universal scripts. They handle 2D sprites, card creation, shuffling, and basic mouse inputs. They contain **zero** rules specific to Scoundrel.
 * **`game.gd`**: Contains the state machine, UI management, and gamerule logic.
+
+## Gameplay Visualisation
+
+<img src="https://github.com/mateushhh/scoundrel/blob/main/readme_images/scoundrel.png" width="50%" alt="Scoundrel Gameplay">
+<img src="https://github.com/mateushhh/scoundrel/blob/main/readme_images/scoundrel2.png" width="50%" alt="Game Over">
+
+## Insporation
+<a href="http://www.youtube.com/watch?v=Gt2tYzM93h4">
+  <img src="http://img.youtube.com/vi/Gt2tYzM93h4/0.jpg" width="300" alt="Scoundrel Tutorial">
+</a>
+
+The project was inspired by a YouTube video called *"How to Play Scoundrel | The Best 1-Player Card Game of All Time"* by *Rulies* \
+You can watch it by clicking on the videos thumbnail
+
+## Author
+[Mateusz Grzonka](https://github.com/mateushhh)
